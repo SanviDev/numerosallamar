@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4aa5d98126.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/style.css">
     <title>Numeros</title>
 </head>
@@ -10,10 +11,36 @@
     <header>
         <h1>Números a llamar</h1>
         <nav>
-            
+            <div class="actions">
+                <a href="/clientes">Ir a clientes confirmados</a>
+                <button id="addNumber" title="Agregar número"><i class="fa-solid fa-plus"></i></button>
+            </div>
         </nav>
     </header>
+    <div class="add-numero">
+        <form id="numberForm" method="post" action="/api/numeros">
+            <h2>Agregar nuevo número</h2>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" required>
+            <label for="red-social">Red Social:</label>
+            <input type="text" id="red-social" name="red-social" required>
+            <select name="categoria" id="categoria">
+                <option value="emprendimiento">Emprendimiento</option>
+                <option value="hotel">Hotel</option>
+                <option value="restaurante">Restaurante</option>
+                <option value="abogado">Abogado</option>
+                <option value="tienda">Tienda</option>
+                <option value="construccion">Construcción</option>
+                <option value="otros">Otros</option>
+            </select>
+            <button type="submit">Guardar</button>
+            <button type="button" id="cancelAdd">Cancelar</button>
+        </form>
+    </div>
     <main>
+
 
     </main>
     <script src="./js/script.js"></script>
