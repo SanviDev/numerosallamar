@@ -68,14 +68,14 @@ app.get("/api/clientes", (req, res) => {
 
 // POST /api/clientes - Agregar un nuevo cliente
 app.post("/api/clientes", (req, res) => {
-  const { numberId, descripcion, fechaLimite } = req.body;
-  db.query("INSERT INTO clientes (numberId, descripcion, fechaLimite) VALUES (?, ?, ?)", [numberId, descripcion, fechaLimite], (err, results) => {
+  const { id_numero, descripcion, fecha_limite } = req.body;
+  db.query("INSERT INTO clientes (id_numero, descripcion, fecha_limite) VALUES (?, ?, ?)", [id_numero, descripcion, fecha_limite], (err, results) => {
     if (err) {
       console.error("Error adding client:", err);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    res.status(201).json({ id: results.insertId, numberId, descripcion, fechaLimite });
+    res.status(201).json({ id: results.insertId, id_numero, descripcion, fecha_limite });
   });
 });
 
