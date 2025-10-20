@@ -54,6 +54,37 @@ app.post("/api/numeros", (req, res) => {
   });
 });
 
+
+// GET /api/numeros/:id - Obtener un número por ID
+app.get("/api/numeros/:id", (req, res) => {
+  const contactId = req.params.id;
+  db.query("SELECT * FROM numeros WHERE id = ?", [contactId], (err, results) => {
+    if (err) {
+      console.error("Error fetching contact:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: "Contact not found" });
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.delete("/api/numeros/:id", (req, res) => {
+  const contactId = req.params.id;
+  db.query("DELETE FROM numeros WHERE id = ?", [contactId], (err, results) => {
+    if (err) {
+      console.error("Error deleting contact:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    res.status(200).json({ message: "Contact deleted successfully" });
+  });
+}
+);
+
 // GET /api/clientes - Obtener todos los clientes
 app.get("/api/clientes", (req, res) => {
   db.query("SELECT * FROM clientes", (err, results) => {
@@ -68,16 +99,17 @@ app.get("/api/clientes", (req, res) => {
 
 // POST /api/clientes - Agregar un nuevo cliente
 app.post("/api/clientes", (req, res) => {
-  const { id_numero, descripcion, fecha_limite } = req.body;
-  db.query("INSERT INTO clientes (id_numero, descripcion, fecha_limite) VALUES (?, ?, ?)", [id_numero, descripcion, fecha_limite], (err, results) => {
+  const { nombre, numero, red_social, categoria, descripcion, fecha_inicial, fecha_final, plan, precio } = req.body;
+  db.query("INSERT INTO clientes (nombre, numero, red_social, categoria, descripcion, fecha_inicial, fecha_final, plan, precio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [nombre, numero, red_social, categoria, descripcion, fecha_inicial, fecha_final, plan, precio], (err, results) => {
     if (err) {
       console.error("Error adding client:", err);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    res.status(201).json({ id: results.insertId, id_numero, descripcion, fecha_limite });
+    res.status(201).json({ id: results.insertId, nombre, numero, red_social, categoria, descripcion, fecha_inicial, fecha_final, plan, precio });
   });
 });
+
 
 
 

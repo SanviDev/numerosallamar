@@ -81,12 +81,95 @@ document.getElementById("cancelAdd").addEventListener("click", () => {
 });
 
 
-document.querySelectorAll('.definir').forEach(element => {
-    element.addEventListener('click', async (e) => {
-        const id = e.target.getAttribute('data-id').split('-')[1];
-        // Aquí puedes agregar la lógica para mover el número a "Clientes"
-        // Por ejemplo, hacer una solicitud POST a /api/clientes con el ID del número
-        console.log('Mover a Clientes ID:', id);
-        
-    });
+main.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+
+    // Botón "Mover a Clientes"
+    if (btn.classList.contains('definir')) {
+        // data-id tiene formato "def-<id>" según el render; extraer id
+        const raw = btn.getAttribute('data-id') || '';
+        const id = raw.split('-')[1];
+        if (!id) return;
+        // console.log('Mover a Clientes ID:', id);
+        document.querySelector('.add-cliente').style.display = 'block';
+        document.getElementById('clienteForm').onsubmit = async (ev) => {
+            ev.preventDefault();
+            const infoNumber = await infoToNumberById(id)
+
+            console.log(infoNumber)
+
+            const data = {
+                nombre: infoNumber.nombre,
+                numero: infoNumber.numero,
+                red_social: infoNumber.red_social,
+                categoria: infoNumber.categoria,
+                descripcion: ev.target.descripcion.value,
+                fecha_inicial: ev.target.fecha_inicial.value,
+                fecha_final: ev.target.fecha_final.value,
+                plan: ev.target.plan.value,
+                precio: ev.target.precio.value,
+            };
+
+            console.log(data);
+            
+
+            const res = await fetch('/api/clientes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+                document.querySelector('.add-cliente').style.display = 'none';
+                alert('Número movido a Clientes correctamente');
+                fetch(`/api/numeros/${id}`, { method: 'DELETE' });
+                renderList();
+                ev.target.reset();
+
+            } else {
+                alert('Error al mover el número a Clientes');
+                const errorData = await res.json();
+                console.error('Error details:', errorData);
+            }
+        };
+        return;
+    }
+
+
+    // Botón "Eliminar"
+    if (btn.classList.contains('delete')) {
+        const raw = btn.getAttribute('data-id') || '';
+        const id = raw.split('-')[1];
+        if (!id) return;
+
+        if (!confirm('¿Eliminar este número?')) return;
+
+        try {
+            const res = await fetch(`/api/numeros/${id}`, { method: 'DELETE' });
+            if (res.ok) {   
+                console.log('Eliminado ID:', id);
+                // Opcional: forzar render inmediato
+                renderList();
+            } else {
+                const err = await res.json().catch(()=>null);
+                console.error('Error al eliminar:', err || res.statusText);
+            }
+        } catch (err) {
+            console.error('Error al eliminar:', err);
+        }
+    }
 });
+
+
+async function infoToNumberById(id) {
+    try {
+        const response = await fetch(`/api/numeros/${id}`, { method: 'GET' });
+        const data = await response.json();
+
+        return data[0];
+    } catch (error) {
+        console.error("Error fetching contact info:", error);
+        return null;
+    }
+}

@@ -1,0 +1,30 @@
+.client{
+    font-family: sans-serif;
+    background-color: #3c3c3c;
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 5px;
+    width: 70%;
+    color: #fff;
+    box-sizing: border-box;
+
+}
+
+.search-container {
+    text-align: center;
+    margin: 1rem auto;
+}
+#searchInput {
+    padding: 0.5rem;
+    width: 35%;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #9a9a9a ;
+    color: #fff;
+    font-family: sans-serif ;
+    &::placeholder {
+        color: #eee;
+    }
+}

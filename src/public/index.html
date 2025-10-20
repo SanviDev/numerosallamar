@@ -39,6 +39,27 @@
             <button type="button" id="cancelAdd">Cancelar</button>
         </form>
     </div>
+    <div class="add-cliente">
+        <form action="/api/cliente" id="clienteForm" method="post">
+            <h2>Agregar cliente confirmado</h2>
+            <label for="cliente-descripcion">Descripcion:</label>
+            <textarea type="text" id="cliente-descripcion" name="descripcion" required></textarea>
+            <label for="fecha_inicial">Fecha Inicial:</label>
+            <input type="date" id="fecha_inicial" name="fecha_inicial" required>
+            <label for="fecha_final">Fecha de entrega</label>
+            <input type="date" id="fecha_final" name="fecha_final" required>
+            <label for="plan">Plan:</label>
+            <select name="plan" id="plan">
+                <option value="Plan Basico">Plan Básico</option>
+                <option value="Plan Premium">Plan Premium</option>
+                <option value="Plan Empresarial">Plan Empresarial</option>
+            </select>
+            <label for="precio">Precio (pesos):</label>
+            <input type="number" id="precio" name="precio" required>
+            <button type="submit">Guardar</button>
+            <button type="button" id="cancelClienteAdd">Cancelar</button>   
+        </form>
+    </div>
     <main>
 
 
